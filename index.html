@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Hashir AI</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0b0f19;
+    color: white;
+    height: 100vh;
+}
+
+.app {
+    display: flex;
+    height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 260px;
+    background: #111827;
+    border-right: 1px solid #263044;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.new-chat {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #374151;
+    background: #1f2937;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.new-chat:hover {
+    background: #293548;
+}
+
+.chat-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.chat-item {
+    padding: 11px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    background: transparent;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.chat-item:hover {
+    background: #1f2937;
+}
+
+.chat-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.delete-chat {
+    border: none;
+    background: transparent;
+    color: #ef4444;
+    cursor: pointer;
+}
+
+/* MAIN */
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.header {
+    height: 65px;
+    border-bottom: 1px solid #263044;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.header-title {
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.header-buttons button {
+    background: #1f2937;
+    border: 1px solid #374151;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.header-buttons button:hover {
+    background: #293548;
+}
+
+/* CHAT */
+
+.chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 25px;
+}
+
+.welcome {
+    text-align: center;
+    margin-top: 15vh;
+}
+
+.welcome h1 {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.welcome p {
+    color: #9ca3af;
+}
+
+.message {
+    max-width: 850px;
+    margin: 0 auto 22px auto;
+}
+
+.message-label {
+    font-size: 13px;
+    color: #9ca3af;
+    margin-bottom: 6px;
+}
+
+.message-content {
+    background: #151c2c;
+    border: 1px solid #263044;
+    border-radius: 12px;
+    padding: 14px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.user .message-content {
+    background: #1d293b;
+}
+
+.actions {
+    margin-top: 7px;
+}
+
+.actions button {
+    background: transparent;
+    border: 1px solid #374151;
+    color: #d1d5db;
+    border-radius: 7px;
+    padding: 5px 9px;
+    cursor: pointer;
+    margin-right: 5px;
+    font-size: 12px;
+}
+
+.actions button:hover {
+    background: #1f2937;
+}
+
+/* THINKING */
+
+.thinking {
+    display: none;
+    max-width: 850px;
+    margin: 0 auto 20px auto;
+    color: #9ca3af;
+}
+
+.dots span {
+    animation: blink 1.4s infinite;
+}
+
+.dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes blink {
+    0%, 60%, 100% {
+        opacity: 0.2;
+    }
+
+    30% {
+        opacity: 1;
+    }
+}
+
+/* INPUT */
+
+.input-area {
+    border-top: 1px solid #263044;
+    padding: 15px;
+}
+
+.input-box {
+    max-width: 850px;
+    margin: auto;
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+textarea {
+    flex: 1;
+    resize: none;
+    min-height: 50px;
+    max-height: 160px;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #374151;
+    background: #111827;
+    color: white;
+    outline: none;
+    font-size: 15px;
+}
+
+textarea:focus {
+    border-color: #6366f1;
+}
+
+.send {
+    padding: 14px 18px;
+    border: none;
+    border-radius: 12px;
+    background: #4f46e5;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.send:hover {
+    background: #4338ca;
+}
+
+.tools {
+    max-width: 850px;
+    margin: 8px auto 0 auto;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .sidebar {
+        width: 210px;
+    }
+
+    .chat-area {
+        padding: 15px;
+    }
+
+    .welcome h1 {
+        font-size: 27px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+```
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        🤖 Hashir AI
+    </div>
+
+    <button class="new-chat" onclick="createNewChat()">
+        ＋ New Chat
+    </button>
+
+    <div id="chatList" class="chat-list"></div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+    <header class="header">
+
+        <div class="header-title">
+            Hashir AI
+        </div>
+
+        <div class="header-buttons">
+
+            <button onclick="clearCurrentChat()">
+                🗑 Clear
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <section id="chatArea" class="chat-area">
+
+        <div id="welcome" class="welcome">
+
+            <h1>How can I help you?</h1>
+
+            <p>
+                Assalam o Alaikum 👋
+                <br>
+                Main Hashir AI hoon.
+            </p>
+
+        </div>
+
+        <div id="thinking" class="thinking">
+
+            Hashir AI is thinking
+            <span class="dots">
+                <span>●</span>
+                <span>●</span>
+                <span>●</span>
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- INPUT -->
+
+    <div class="input-area">
+
+        <div class="input-box">
+
+            <textarea
+                id="messageInput"
+                placeholder="Message Hashir AI..."
+                rows="1"
+            ></textarea>
+
+            <button
+                class="send"
+                onclick="sendMessage()"
+            >
+                Send
+            </button>
+
+        </div>
+
+        <div class="tools">
+            Enter = Send &nbsp; | &nbsp;
+            Shift + Enter = New line
+        </div>
+
+    </div>
+
+</main>
+```
+
+</div>
+
+<script>
+
+let currentChatId = null;
+
+
+/* =========================
+   LOAD CHATS
+========================= */
+
+async function loadChats() {
+
+    try {
+
+        const response = await fetch("/chats");
+
+        const chats = await response.json();
+
+        const list = document.getElementById("chatList");
+
+        list.innerHTML = "";
+
+        chats.forEach(chat => {
+
+            const item = document.createElement("div");
+
+            item.className = "chat-item";
+
+            const title = document.createElement("div");
+
+            title.className = "chat-title";
+
+            title.textContent = chat.title;
+
+            title.onclick = function() {
+
+                loadChat(chat.id);
+
+            };
+
+
+            const del = document.createElement("button");
+
+            del.className = "delete-chat";
+
+            del.textContent = "×";
+
+            del.onclick = function(event) {
+
+                event.stopPropagation();
+
+                deleteChat(chat.id);
+
+            };
+
+
+            item.appendChild(title);
+
+            item.appendChild(del);
+
+            list.appendChild(item);
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =========================
+   NEW CHAT
+========================= */
+
+async function createNewChat() {
+
+    const response = await fetch(
+        "/new_chat",
+        {
+            method: "POST"
+        }
+    );
+
+    const data = await response.json();
+
+    currentChatId = data.chat_id;
+
+    clearScreen();
+
+    await loadChats();
+
+}
+
+
+/* =========================
+   CLEAR SCREEN
+========================= */
+
+function clearScreen() {
+
+    const area = document.getElementById("chatArea");
+
+    area.innerHTML = `
+
+        <div id="welcome" class="welcome">
+
+            <h1>How can I help you?</h1>
+
+            <p>
+                Assalam o Alaikum 👋
+                <br>
+                Main Hashir AI hoon.
+            </p>
+
+        </div>
+
+        <div id="thinking" class="thinking">
+
+            Hashir AI is thinking
+            <span class="dots">
+                <span>●</span>
+                <span>●</span>
+                <span>●</span>
+            </span>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================
+   LOAD CHAT
+========================= */
+
+async function loadChat(chatId) {
+
+    currentChatId = chatId;
+
+    const response =
+        await fetch("/get_chat/" + chatId);
+
+    const data = await response.json();
+
+    clearScreen();
+
+    const welcome =
+        document.getElementById("welcome");
+
+    if (welcome) {
+
+        welcome.remove();
+
+    }
+
+    data.messages.forEach(message => {
+
+        addMessage(
+            message.role,
+            message.content
+        );
+
+    });
+
+}
+
+
+/* =========================
+   ADD MESSAGE
+========================= */
+
+function addMessage(role, text) {
+
+    const area =
+        document.getElementById("chatArea");
+
+    const message =
+        document.createElement("div");
+
+    message.className =
+        "message " + role;
+
+    const label =
+        document.createElement("div");
+
+    label.className =
+        "message-label";
+
+    label.textContent =
+        role === "user"
+        ? "You"
+        : "Hashir AI";
+
+
+    const content =
+        document.createElement("div");
+
+    content.className =
+        "message-content";
+
+    content.textContent = text;
+
+
+    message.appendChild(label);
+
+    message.appendChild(content);
+
+
+    if (role === "assistant") {
+
+        const actions =
+            document.createElement("div");
+
+        actions.className =
+            "actions";
+
+
+        const speak =
+            document.createElement("button");
+
+        speak.textContent =
+            "🔊 Speak";
+
+        speak.onclick =
+            function() {
+
+                speakText(text);
+
+            };
+
+
+        const copy =
+            document.createElement("button");
+
+        copy.textContent =
+            "📋 Copy";
+
+        copy.onclick =
+            function() {
+
+                copyText(text);
+
+            };
+
+
+        actions.appendChild(speak);
+
+        actions.appendChild(copy);
+
+        message.appendChild(actions);
+
+    }
+
+
+    area.appendChild(message);
+
+    area.scrollTop =
+        area.scrollHeight;
+
+}
+
+
+/* =========================
+   DELETE CHAT
+========================= */
+
+async function deleteChat(chatId) {
+
+    await fetch(
+        "/delete_chat",
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                    "application/json"
+            },
+
+            body: JSON.stringify({
+                chat_id: chatId
+            })
+
+        }
+    );
+
+    if (currentChatId === chatId) {
+
+        currentChatId = null;
+
+        clearScreen();
+
+    }
+
+    loadChats();
+
+}
+
+
+/* =========================
+   CLEAR CURRENT CHAT
+========================= */
+
+async function clearCurrentChat() {
+
+    if (!currentChatId) {
+
+        clearScreen();
+
+        return;
+
+    }
+
+
+    await fetch(
+        "/clear_chat",
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                    "application/json"
+            },
+
+            body: JSON.stringify({
+                chat_id: currentChatId
+            })
+
+        }
+    );
+
+
+    clearScreen();
+
+    loadChats();
+
+}
+
+
+/* =========================
+   SEND MESSAGE
+========================= */
+
+async function sendMessage() {
+
+    const input =
+        document.getElementById(
+            "messageInput"
+        );
+
+    const message =
+        input.value.trim();
+
+
+    if (!message) {
+
+        return;
+
+    }
+
+
+    const welcome =
+        document.getElementById("welcome");
+
+    if (welcome) {
+
+        welcome.remove();
+
+    }
+
+
+    addMessage(
+        "user",
+        message
+    );
+
+
+    input.value = "";
+
+    input.style.height = "50px";
+
+
+    const thinking =
+        document.getElementById(
+            "thinking"
+        );
+
+    thinking.style.display =
+        "block";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/chat",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        chat_id:
+                            currentChatId,
+
+                        message:
+                            message
+
+                    })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        currentChatId =
+            data.chat_id;
+
+
+        thinking.style.display =
+            "none";
+
+
+        addMessage(
+            "assistant",
+            data.reply
+        );
+
+
+        await loadChats();
+
+    }
+
+    catch (error) {
+
+        thinking.style.display =
+            "none";
+
+        addMessage(
+            "assistant",
+            "❌ Hashir AI se connection nahi ho saka."
+        );
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =========================
+   COPY
+========================= */
+
+function copyText(text) {
+
+    navigator.clipboard.writeText(text);
+
+}
+
+
+/* =========================
+   URDU AI VOICE
+========================= */
+
+async function speakText(text) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/speak",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        text: text
+                    })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            alert(
+                "Urdu voice generate nahi ho saki."
+            );
+
+            return;
+
+        }
+
+
+        const audio =
+            new Audio(
+                data.audio +
+                "?t=" +
+                Date.now()
+            );
+
+
+        await audio.play();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Voice error:",
+            error
+        );
+
+        alert(
+            "Urdu voice mein problem aa gayi."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   ENTER KEY
+========================= */
+
+document
+    .getElementById("messageInput")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault();
+
+                sendMessage();
+
+            }
+
+        }
+    );
+
+
+/* =========================
+   AUTO RESIZE
+========================= */
+
+document
+    .getElementById("messageInput")
+    .addEventListener(
+        "input",
+        function() {
+
+            this.style.height =
+                "auto";
+
+            this.style.height =
+                Math.min(
+                    this.scrollHeight,
+                    160
+                ) + "px";
+
+        }
+    );
+
+
+/* =========================
+   START
+========================= */
+
+loadChats();
+
+</script>
+
+</body>
+</html>
