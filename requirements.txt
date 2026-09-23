@@ -1,0 +1,4 @@
+Flask
+gunicorn
+groq
+edge-tts
